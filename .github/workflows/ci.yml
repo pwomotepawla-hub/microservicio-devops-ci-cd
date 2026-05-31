@@ -33,3 +33,15 @@ jobs:
       - uses: actions/checkout@v4
 
       - run: docker build -t microservicio-devops .
+      
+      deploy:
+
+    needs: docker
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Simular despliegue
+        run: |
+          echo "Desplegando aplicación..."
+          echo "Deploy exitoso"
