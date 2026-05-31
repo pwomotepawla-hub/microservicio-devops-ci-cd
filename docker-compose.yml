@@ -1,17 +1,31 @@
 version: '3.8'
 
 services:
-  microservicio:
+
+  app:
     build: .
     container_name: microservicio-devops
 
     ports:
       - "5000:5000"
 
+    environment:
+      - APP_ENV=production
+
+    networks:
+      - devops-network
+
     restart: always
 
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+  redis:
+    image: redis:latest
+
+    container_name: redis-cache
+
+    networks:
+      - devops-network
+
+    restart: always
+
+networks:
+  devops-network:
