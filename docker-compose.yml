@@ -12,15 +12,27 @@ services:
     environment:
       - APP_ENV=production
 
+    depends_on:
+      - redis
+
     networks:
       - devops-network
 
     restart: always
 
+    healthcheck:
+      test: ["CMD", "python", "--version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
   redis:
     image: redis:latest
 
     container_name: redis-cache
+
+    volumes:
+      - redis-data:/data
 
     networks:
       - devops-network
@@ -29,3 +41,6 @@ services:
 
 networks:
   devops-network:
+
+volumes:
+  redis-data:
