@@ -15,16 +15,16 @@ services:
     depends_on:
       - redis
 
+    healthcheck:
+      test: ["CMD", "python", "-c", "print('ok')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
     networks:
       - devops-network
 
     restart: always
-
-    healthcheck:
-      test: ["CMD", "python", "--version"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   redis:
     image: redis:latest
@@ -33,6 +33,12 @@ services:
 
     volumes:
       - redis-data:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
     networks:
       - devops-network
